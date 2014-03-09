@@ -2,7 +2,7 @@ using System;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 
-namespace univ
+namespace univ.Engine.Geometry
 {
 	/// <summary>
 	/// Vertex attribute.

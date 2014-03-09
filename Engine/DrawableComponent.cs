@@ -27,13 +27,13 @@ namespace univ
 			this.rotation = Vector3.Zero;
 			this.scale = Vector3.One;
 			this.shader = shader;
-			RecalculateModelMatrix();
+			RecalculateMatrix();
 		}
 		
 		public override void Move(float x, float y, float z)
 		{
 			base.Move(x, y, z);
-			RecalculateModelMatrix();
+			RecalculateMatrix();
 		}
 		
 		/* in degrees? */
@@ -46,23 +46,37 @@ namespace univ
 			Quaternion qx = Quaternion.FromAxisAngle(Vector3.UnitX, this.rotation.X);
 			Quaternion qy = Quaternion.FromAxisAngle(Vector3.UnitY, this.rotation.Y);
 			Quaternion qz = Quaternion.FromAxisAngle(Vector3.UnitZ, this.rotation.Z);
+			
 			this.orientation = qz * qy * qx;
 			this.orientation.Normalize();
-			RecalculateModelMatrix();
+			RecalculateMatrix();
 		}
 		
-		protected void RecalculateModelMatrix()
+		public void Rescale(float scale) {
+			Rescale(scale, scale, scale);		
+		}	
+		
+		public void Rescale(float x, float y, float z)
+		{
+			this.scale.X *= x;
+			this.scale.Y *= y;
+			this.scale.Z *= z;
+			RecalculateMatrix();
+		}
+		
+		public void RecalculateMatrix()
 		{
 			Matrix4.CreateFromQuaternion(ref this.orientation, out this.rotationMatrix);
 			Matrix4.CreateScale(ref this.scale, out this.scaleMatrix);
 			Matrix4.CreateTranslation(ref this.position, out this.translationMatrix);
 			
-			this.modelMatrix = this.scaleMatrix * this.rotationMatrix * this.translationMatrix;
+			Matrix4.Mult(ref scaleMatrix, ref rotationMatrix, out modelMatrix); // S*R
+			Matrix4.Mult(ref modelMatrix, ref translationMatrix, out modelMatrix); // (S*R)*T
 		}
 		
 		public virtual void Draw(DrawEventArgs e)
 		{
-			Matrix4 model = e.ModelMatrix * this.modelMatrix;
+			Matrix4 model = this.modelMatrix * e.ModelMatrix;
 			DrawEventArgs child_event = new DrawEventArgs(e.Scene, e.Camera, model);
 			foreach(Component child in this.children)
 				if (child is DrawableComponent)

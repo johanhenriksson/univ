@@ -7,17 +7,16 @@ namespace univ
 	{
 		public Scene Scene { get { return this.scene; } }
 		public Camera Camera { get { return this.camera; } } 
-		public Matrix4 ModelMatrix { get { return this.modelMatrix; } }
+		public Matrix4 ModelMatrix; 
 		
 		protected Scene scene;
 		protected Camera camera;
-		protected Matrix4 modelMatrix;
 		
 		public DrawEventArgs(Scene scene, Camera camera, Matrix4 model)
 		{
 			this.scene = scene;
 			this.camera = camera;
-			this.modelMatrix = model;
+			this.ModelMatrix = model;
 		}
 	}
 }

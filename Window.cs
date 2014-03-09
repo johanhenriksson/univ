@@ -29,6 +29,7 @@ namespace univ
 			Cube child = new Cube(shader);
 			child.Rotate(45, 0, 0);
 			child.Move(0,2,0);
+			child.Rescale(0.8f);
 			cube.Attach(child);
 			cube.Move(-1,0,-1);
 			

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 
-namespace univ
+namespace univ.Engine.Geometry
 {
 	public class VertexArray
 	{
@@ -13,7 +13,7 @@ namespace univ
 		protected int id;
 		protected int elements;
 		protected PrimitiveType primitive;
-		protected Dictionary<string, GLBuffer> arrays;
+		protected Dictionary<string, VertexBuffer> arrays;
 		protected Dictionary<int, VertexAttribute> attributes;
 		
 		public VertexArray() : this(PrimitiveType.Triangles) { }
@@ -22,7 +22,7 @@ namespace univ
 		{
 			this.id = GL.GenVertexArray();
 			this.primitive = primitive;
-			this.arrays = new Dictionary<string, GLBuffer>();
+			this.arrays = new Dictionary<string, VertexBuffer>();
 			this.attributes = new Dictionary<int, VertexAttribute>();
 		}
 		
@@ -41,18 +41,17 @@ namespace univ
 			GL.BindVertexArray(0);
 		}
 		
-		public T CreateBuffer<T>(string bufferName, BufferTarget target) where T : GLBuffer, new()
+		public VertexBuffer CreateBuffer(string bufferName, BufferTarget target)
 		{
 			this.Bind();
-			T buffer = new T();
-			buffer.Target = target;
+			VertexBuffer buffer = new VertexBuffer(target);
 			this.arrays.Add(bufferName, buffer);
 			return buffer;
 		}
 		
 		public void AddPointer(string bufferName, VertexAttribute pointer)
 		{
-			GLBuffer buffer = this.arrays[bufferName];
+			VertexBuffer buffer = this.arrays[bufferName];
 			this.attributes.Add(pointer.Location, pointer);
 			buffer.Bind();
 			pointer.Point();

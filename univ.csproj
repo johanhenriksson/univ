@@ -21,6 +21,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <ConsolePause>false</ConsolePause>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>none</DebugType>
@@ -30,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <ConsolePause>false</ConsolePause>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -41,26 +43,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
-    <Compile Include="Entity.cs" />
-    <Compile Include="Instruction.cs" />
     <Compile Include="Window.cs" />
-    <Compile Include="VertexAttribute.cs" />
-    <Compile Include="VertexArray.cs" />
-    <Compile Include="ShaderComponent.cs" />
-    <Compile Include="Shader.cs" />
-    <Compile Include="GLBuffer.cs" />
-    <Compile Include="Vector3Buffer.cs" />
-    <Compile Include="UShortBuffer.cs" />
     <Compile Include="Cube.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="Engine\DrawEventArgs.cs" />
     <Compile Include="Engine\Scene.cs" />
     <Compile Include="Engine\Component.cs" />
     <Compile Include="Engine\DrawableComponent.cs" />
+    <Compile Include="Engine\Shader.cs" />
+    <Compile Include="Engine\ShaderComponent.cs" />
+    <Compile Include="Engine\Geometry\VertexArray.cs" />
+    <Compile Include="Engine\Geometry\VertexAttribute.cs" />
+    <Compile Include="Engine\Geometry\VertexBuffer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Shaders\" />
     <Folder Include="Engine\" />
+    <Folder Include="Engine\Geometry\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\fragment.glsl">

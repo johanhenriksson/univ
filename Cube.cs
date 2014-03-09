@@ -1,24 +1,27 @@
 using System;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
+using univ.Engine.Geometry;
 
 namespace univ
 {
 	public class Cube : DrawableComponent
 	{
-		VertexArray geometry;
+		protected Matrix4 mvp;
+		protected VertexArray geometry;
 		
 		public Cube(Shader shader)
 			: base(shader)
 		{
+			this.mvp = Matrix4.Identity;
 			this.geometry = new VertexArray(PrimitiveType.Triangles);
-			Vector3Buffer vertexBuffer = this.geometry.CreateBuffer<Vector3Buffer>("vertex", BufferTarget.ArrayBuffer);
+			VertexBuffer vertexBuffer = this.geometry.CreateBuffer("vertex", BufferTarget.ArrayBuffer);
 			vertexBuffer.BufferData(ref cubeVerticies);
 			
-			Vector3Buffer colorBuffer = this.geometry.CreateBuffer<Vector3Buffer>("color", BufferTarget.ArrayBuffer);
+			VertexBuffer colorBuffer = this.geometry.CreateBuffer("color", BufferTarget.ArrayBuffer);
 			colorBuffer.BufferData(ref cubeColors);
 			
-			UShortBuffer indexBuffer = this.geometry.CreateBuffer<UShortBuffer>("index", BufferTarget.ElementArrayBuffer);
+			VertexBuffer indexBuffer = this.geometry.CreateBuffer("index", BufferTarget.ElementArrayBuffer);
 			indexBuffer.BufferData(ref cubeIndices);
 			
 			this.geometry.AddPointer("color",  new VertexAttribute(this.shader, "vColor",    VertexAttribPointerType.Float, 3, 0, false));	
@@ -27,8 +30,11 @@ namespace univ
 		
 		public override void Draw(DrawEventArgs e)
 		{
-			Matrix4 mvp = this.modelMatrix * e.ModelMatrix * e.Camera.ViewProjection;
+			/* Calculate Model/View/Projection matrix */
+			Matrix4.Mult(ref this.modelMatrix, ref e.ModelMatrix, out mvp);
+			Matrix4.Mult(ref mvp, ref e.Camera.ViewProjection, out mvp);
 			shader.SetUniformMatrix("mvp", ref mvp);
+			
 			this.geometry.DrawElements(36, DrawElementsType.UnsignedShort);
 			
 			base.Draw(e);
