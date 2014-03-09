@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{653866E7-250A-4B23-ABCC-18E541D68A19}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>univ</RootNamespace>
+    <AssemblyName>univ</AssemblyName>
+    <StartupObject>univ.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Reference Include="OpenTK">
+      <HintPath>..\..\OpenTK\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Main.cs" />
+    <Compile Include="Entity.cs" />
+    <Compile Include="Instruction.cs" />
+    <Compile Include="Window.cs" />
+    <Compile Include="VertexAttribute.cs" />
+    <Compile Include="VertexArray.cs" />
+    <Compile Include="ShaderComponent.cs" />
+    <Compile Include="Shader.cs" />
+    <Compile Include="GLBuffer.cs" />
+    <Compile Include="Vector3Buffer.cs" />
+    <Compile Include="UShortBuffer.cs" />
+    <Compile Include="Cube.cs" />
+    <Compile Include="Camera.cs" />
+    <Compile Include="Engine\DrawEventArgs.cs" />
+    <Compile Include="Engine\Scene.cs" />
+    <Compile Include="Engine\Component.cs" />
+    <Compile Include="Engine\DrawableComponent.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Shaders\" />
+    <Folder Include="Engine\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\fragment.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Shaders\vertex.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>
