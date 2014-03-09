@@ -14,10 +14,11 @@ namespace univ
 		Camera camera;
 		Cube cube;
 		
-		public Window () : base(800, 600)
+		public Window () : base(1280, 720)
 		{
+
 		}
-		
+
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad (e);
@@ -28,6 +29,7 @@ namespace univ
 			shader.Link();
 			
 			cube = new Cube(shader);
+			cube.Move(0,0,3);
 			
 			Cube child = new Cube(shader);
 			child.Rotate(45, 0, 0);
