@@ -7,7 +7,10 @@ namespace univ
 {
 	public class Window : GameWindow
 	{
+		// Move to some kind of shader manager
 		Shader shader;
+		
+		// Move to a scene graph
 		Camera camera;
 		Cube cube;
 		
@@ -18,7 +21,7 @@ namespace univ
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad (e);
-			Title = "Test";
+			Title = "univ engine";
 			GL.ClearColor(Color.CornflowerBlue);
 			
 			shader = new Shader("Shaders/vertex.glsl", "Shaders/fragment.glsl");
