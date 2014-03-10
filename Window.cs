@@ -30,6 +30,13 @@ namespace univ
                 case 'g':
                     octree.Split(0,1,0);
                     break;
+                case 'h':
+                    octree.Delete(0,1,0);
+                    break;
+                case 'f':
+                    Vector3 pos = camera.UnProject(Width / 2, Height / 2).Xyz;   
+                    Console.WriteLine("Unprojected " + pos);
+                    break;
                 }
             };
             
@@ -48,13 +55,14 @@ namespace univ
             shader.Link();
          
             octree = new Octree(shader);
-            octree.Rescale(5);
+            octree.Rescale(50);
          
             this.camera = new Camera(Width, Height);
             GL.Viewport(0, 0, Width, Height);
             GL.Enable(EnableCap.DepthTest);
             GL.DepthFunc(DepthFunction.Less);
-            GL.Disable(EnableCap.CullFace);
+            GL.Enable(EnableCap.CullFace);
+            GL.CullFace(CullFaceMode.Front);
         }
      
         protected override void OnUpdateFrame(FrameEventArgs e)

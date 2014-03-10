@@ -1,6 +1,7 @@
 using System;
 using OpenTK;
 using OpenTK.Input;
+using OpenTK.Graphics.OpenGL4;
 
 namespace univ
 {
@@ -90,12 +91,15 @@ namespace univ
         
         public Vector4 UnProject(int x, int y)
         {
-            Vector2 mouse = new Vector2(x, y);
+            Vector2 mouse = new Vector2(x, this.height);
             Vector4 vec;
- 
+            
+            float depth = 0.0f;
+            GL.ReadPixels(x,y, 1, 1, PixelFormat.DepthComponent, PixelType.Float, ref depth);
+            
             vec.X = 2.0f * mouse.X / (float)this.width - 1;
             vec.Y = -(2.0f * mouse.Y / (float)this.height - 1);
-            vec.Z = 0;
+            vec.Z = depth;
             vec.W = 1.0f;
  
             Matrix4 viewInv = Matrix4.Invert(View);
