@@ -27,7 +27,7 @@ namespace univ.Engine.Geometry
 		}
 		
 		~VertexArray()
-		{
+		{   
 			GL.DeleteVertexArray(this.id);
 		}
 		
@@ -41,6 +41,10 @@ namespace univ.Engine.Geometry
 			GL.BindVertexArray(0);
 		}
 		
+        public VertexBuffer CreateBuffer(string bufferName) {
+           return this.CreateBuffer(bufferName, BufferTarget.ArrayBuffer);
+        }
+        
 		public VertexBuffer CreateBuffer(string bufferName, BufferTarget target)
 		{
 			this.Bind();
@@ -74,7 +78,7 @@ namespace univ.Engine.Geometry
 		{
 			Bind();
 			Enable();
-			GL.DrawArrays(PrimitiveType.Triangles, 0, elements);	
+			GL.DrawArrays(primitive, 0, elements);	
 			Disable();
 			Unbind();
 		}

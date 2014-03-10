@@ -38,9 +38,11 @@ namespace univ
         
         public override void Draw(DrawEventArgs e)
         {
+            shader.Use();
+            
             /* Calculate Model/View/Projection matrix */
             Matrix4.Mult(ref this.modelMatrix, ref e.ModelMatrix, out mvp);
-            Matrix3 m = new Matrix3(mvp);
+            Matrix3 m = new Matrix3(mvp); // Copy the top-right 3x3 model matrix for later...
             Matrix4.Mult(ref mvp, ref e.Camera.ViewProjection, out mvp);
             shader.SetMatrix("mvp", ref mvp);
             

@@ -89,16 +89,16 @@ namespace univ
             Matrix4.Mult(ref View, ref Projection, out ViewProjection);      
         }
         
-        public Vector4 UnProject(int x, int y)
+        public Vector3 Unproject(int x, int y)
         {
-            Vector2 mouse = new Vector2(x, this.height);
+            Vector2 mouse = new Vector2(x, height - y - 1);
             Vector4 vec;
             
             float depth = 0.0f;
             GL.ReadPixels(x,y, 1, 1, PixelFormat.DepthComponent, PixelType.Float, ref depth);
             
             vec.X = 2.0f * mouse.X / (float)this.width - 1;
-            vec.Y = -(2.0f * mouse.Y / (float)this.height - 1);
+            vec.Y = (2.0f * mouse.Y / (float)this.height - 1);
             vec.Z = depth;
             vec.W = 1.0f;
  
@@ -114,7 +114,7 @@ namespace univ
                 vec.Z /= vec.W;
             }
  
-            return vec;
+            return vec.Xyz;
         }
         
         protected void handleKeyboard(float dt)

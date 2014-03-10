@@ -11,10 +11,12 @@ namespace univ
     {
         // Move to some kind of shader manager
         Shader shader;
+        Shader line_shader;
      
         // Move to a scene graph
         Camera camera;
         Octree octree;
+        Axis axis;
         
         bool wireframe = false;
      
@@ -34,7 +36,7 @@ namespace univ
                     octree.Delete(0,1,0);
                     break;
                 case 'f':
-                    Vector3 pos = camera.UnProject(Width / 2, Height / 2).Xyz;   
+                    Vector3 pos = camera.Unproject(Width / 2, Height / 2);   
                     Console.WriteLine("Unprojected " + pos);
                     break;
                 }
@@ -43,6 +45,13 @@ namespace univ
             Move += delegate(object sender, EventArgs e) {
                 GL.Viewport(0, 0, Width, Height); 
             };
+            
+            Mouse.ButtonUp += delegate(object sender, MouseButtonEventArgs e) {
+                if (e.Button == MouseButton.Left) {
+                    Vector3 pos = camera.Unproject(e.X, e.Y);
+                    Console.WriteLine("Clicked at {0},{1} -> {2}", e.X, e.Y, pos);
+                }
+            };
         }
 
         protected override void OnLoad(EventArgs e)
@@ -50,13 +59,15 @@ namespace univ
             base.OnLoad(e);
             Title = "univ engine";
             GL.ClearColor(Color.LightGray);
-         
+            
             shader = new Shader("Shaders/vertex.glsl", "Shaders/fragment.glsl");
-            shader.Link();
+            line_shader = new Shader("Shaders/line.v.glsl", "Shaders/line.f.glsl");
          
             octree = new Octree(shader);
-            octree.Rescale(50);
-         
+            octree.Rescale(10);
+            
+            axis = new Axis(line_shader);
+            
             this.camera = new Camera(Width, Height);
             GL.Viewport(0, 0, Width, Height);
             GL.Enable(EnableCap.DepthTest);
@@ -72,6 +83,7 @@ namespace univ
             camera.Update(dt);
          
             octree.Update(dt);
+            axis.Update(dt);
         }
      
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -82,13 +94,13 @@ namespace univ
             shader.Use();
             
             Vector4 lightvec = new Vector4(0, 1, 2, 0);
-            //Vector4.Transform(ref lightvec, ref camera.View, out lightvec);
             Vector3 transformed = lightvec.Xyz.Normalized();
-            
             shader.SetVector3("light", ref transformed);
          
             DrawEventArgs args = new DrawEventArgs(null, this.camera, Matrix4.Identity);
-            octree.Draw(args);
+            
+            octree.Draw(args); 
+            axis.Draw(args);
          
             SwapBuffers();
         }
