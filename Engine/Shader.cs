@@ -89,10 +89,22 @@ namespace univ
             return loc;  
         }
      
-        public void SetUniformMatrix(string name, ref Matrix4 matrix)
+        public void SetMatrix(string name, ref Matrix4 matrix)
         {
             int loc = GetUniformLocation(name);
             GL.UniformMatrix4(loc, false, ref matrix);
+        }
+        
+        public void SetMatrix3(string name, ref Matrix3 matrix)
+        {
+            int loc = GetUniformLocation(name);
+            GL.UniformMatrix3(loc, false, ref matrix);
+        }
+        
+        public void SetVector3(string name, ref Vector3 vector)
+        {
+            int loc = GetUniformLocation(name);
+            GL.Uniform3(loc, ref vector);
         }
     }
 }

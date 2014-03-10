@@ -26,8 +26,8 @@ namespace univ
         protected float aspectRatio;
      
         /* Transformation Matricies */
-        protected Matrix4 view;
-        protected Matrix4 projection;
+        public Matrix4 View;
+        public Matrix4 Projection;
  
         /* Input State */
         protected KeyboardState keystate;
@@ -47,7 +47,7 @@ namespace univ
             /* Calculate vertical field of view based on screen resolution */
             float fovy = 2.0f * (float)Math.Atan(Math.Tan(Math.PI / 4.0) * (double)height / width);
             
-            this.projection = Matrix4.CreatePerspectiveFieldOfView(fovy, this.aspectRatio, 0.1f, 100.0f);
+            this.Projection = Matrix4.CreatePerspectiveFieldOfView(fovy, this.aspectRatio, 0.1f, 100.0f);
             this.ViewProjection = Matrix4.Identity;
          
             /* Set up an initial previous mouse state to avoid strange behaviour
@@ -84,8 +84,8 @@ namespace univ
          
             /* Recalculate View Projection matrix */
             Vector3 target = position + lookAt;
-            this.view = Matrix4.LookAt(this.position, target, Vector3.UnitY);
-            Matrix4.Mult(ref view, ref projection, out ViewProjection);      
+            this.View = Matrix4.LookAt(this.position, target, Vector3.UnitY);
+            Matrix4.Mult(ref View, ref Projection, out ViewProjection);      
         }
         
         public Vector4 UnProject(int x, int y)
@@ -98,8 +98,8 @@ namespace univ
             vec.Z = 0;
             vec.W = 1.0f;
  
-            Matrix4 viewInv = Matrix4.Invert(view);
-            Matrix4 projInv = Matrix4.Invert(projection);
+            Matrix4 viewInv = Matrix4.Invert(View);
+            Matrix4 projInv = Matrix4.Invert(Projection);
  
             Vector4.Transform(ref vec, ref projInv, out vec);
             Vector4.Transform(ref vec, ref viewInv, out vec);

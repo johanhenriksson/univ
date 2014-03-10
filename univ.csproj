@@ -44,17 +44,18 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="Window.cs" />
-    <Compile Include="Cube.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="Engine\DrawEventArgs.cs" />
     <Compile Include="Engine\Scene.cs" />
     <Compile Include="Engine\Component.cs" />
-    <Compile Include="Engine\DrawableComponent.cs" />
     <Compile Include="Engine\Shader.cs" />
     <Compile Include="Engine\ShaderComponent.cs" />
     <Compile Include="Engine\Geometry\VertexArray.cs" />
     <Compile Include="Engine\Geometry\VertexAttribute.cs" />
     <Compile Include="Engine\Geometry\VertexBuffer.cs" />
+    <Compile Include="Voxel.cs" />
+    <Compile Include="Engine\Byte3.cs" />
+    <Compile Include="Octree.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Shaders\" />
