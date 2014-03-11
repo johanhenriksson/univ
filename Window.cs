@@ -29,7 +29,13 @@ namespace univ
                 switch(e.KeyChar) {
                 case 't':
                     wireframe = !wireframe;
-                    GL.PolygonMode(MaterialFace.FrontAndBack, wireframe ? PolygonMode.Line : PolygonMode.Fill);
+                    if (wireframe) {
+                        GL.Disable(EnableCap.CullFace);
+                        GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
+                    } else {
+                        GL.Enable(EnableCap.CullFace);
+                        GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+                    }
                     break;
                 case 'g':
                     octree.Split(0,1,0);
