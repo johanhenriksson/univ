@@ -6,8 +6,8 @@ namespace univ
 	{
 		public static void Main(string[] args)
 		{
-			Window wnd = new Window();
-			wnd.Run(30,60);
+            Window wnd = new Window();
+            wnd.Run(30,60);
 		}
 	}
 }

@@ -57,23 +57,29 @@
     <Compile Include="Engine\Byte3.cs" />
     <Compile Include="Octree.cs" />
     <Compile Include="Axis.cs" />
+    <Compile Include="Engine\ObjLoader\ObjLoader.cs" />
+    <Compile Include="Engine\Int3.cs" />
+    <Compile Include="Engine\ObjLoader\Scanner.cs" />
+    <Compile Include="Engine\ShaderLibrary.cs" />
+    <Compile Include="Engine\Model.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Shaders\" />
     <Folder Include="Engine\" />
     <Folder Include="Engine\Geometry\" />
+    <Folder Include="Engine\ObjLoader\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\fragment.glsl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Shaders\vertex.glsl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Shaders\line.f.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Shaders\line.v.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Shaders\basic.f.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Shaders\basic.v.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

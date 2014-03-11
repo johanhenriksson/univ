@@ -18,6 +18,8 @@ namespace univ
         Octree octree;
         Axis axis;
         
+        Model model;
+        
         bool wireframe = false;
      
         public Window() 
@@ -60,8 +62,12 @@ namespace univ
             Title = "univ engine";
             GL.ClearColor(Color.LightGray);
             
-            shader = new Shader("Shaders/vertex.glsl", "Shaders/fragment.glsl");
-            line_shader = new Shader("Shaders/line.v.glsl", "Shaders/line.f.glsl");
+            shader = ShaderLibrary.Get("basic");
+            line_shader = ShaderLibrary.Get("line");
+            
+            ObjLoader loader = new ObjLoader("teapot.obj");
+            model = loader.Assemble();
+            model.Rescale(0.05f);
          
             octree = new Octree(shader);
             octree.Rescale(10);
@@ -84,6 +90,8 @@ namespace univ
          
             octree.Update(dt);
             axis.Update(dt);
+            
+            model.Rotate(0, 30 * dt, 0);
         }
      
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -93,14 +101,16 @@ namespace univ
          
             shader.Use();
             
-            Vector4 lightvec = new Vector4(0, 1, 2, 0);
-            Vector3 transformed = lightvec.Xyz.Normalized();
-            shader.SetVector3("light", ref transformed);
+            Vector3 lightvec = new Vector3(0, 1, 2);
+            shader.SetVector3("light", ref lightvec);
          
             DrawEventArgs args = new DrawEventArgs(null, this.camera, Matrix4.Identity);
             
-            octree.Draw(args); 
+            //octree.Draw(args); 
             axis.Draw(args);
+            
+            shader.Use();
+            model.Draw(args);
          
             SwapBuffers();
         }

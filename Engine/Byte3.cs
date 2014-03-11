@@ -8,6 +8,8 @@ namespace univ
         public byte Y;
         public byte Z;
         
+        public Byte3(byte b) : this(b, b, b) { }
+        
         public Byte3(byte x, byte y, byte z)
         {
             this.X = x;

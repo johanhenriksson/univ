@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 
@@ -37,14 +38,14 @@ namespace univ.Engine.Geometry
 		public void BufferData<T>(ref T[] data) where T : struct
 		{
 			Bind();
-			unsafe {
-				GL.BufferData<T>(
-					this.target, 
-					(IntPtr)(data.Length * sizeof(T)),
-					data, 
-					BufferUsageHint.StaticDraw
-				);
-			}
+            unsafe {      
+			GL.BufferData<T>(
+				this.target, 
+                (IntPtr)(data.Length * sizeof(T)),
+				data, 
+				BufferUsageHint.StaticDraw
+			);
+            }
 		}
 	}
 }
