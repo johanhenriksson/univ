@@ -64,15 +64,29 @@ namespace univ
 
             }
         }
+        
+        protected void calculateNormals()
+        {
+            foreach(UInt3 face in faces) {
+                Vector3 v1 = verticies[(int)face.X - 1];
+                Vector3 v2 = verticies[(int)face.Y - 1];
+                Vector3 normal = Vector3.Cross(v1, v2);
+                vertexNormals.Add(normal);
+            }
+            Console.WriteLine("Normals calculated from face data");
+        }
 
         public Model Assemble()
         {
+            if (vertexNormals.Count == 0)
+                calculateNormals();
+            
             Vector3[] vertexData = verticies.ToArray();
             Vector3[] normals = vertexNormals.ToArray();
             Byte3[] colors = new Byte3[vertexData.Length];
             ushort[] indices = new ushort[faces.Count * 3];
             
-            Byte3 color = new Byte3(210, 35, 35);
+            Byte3 color = new Byte3(45, 35, 200);
             for(int i = 0; i < colors.Length; i++)
                 colors[i] = color;
             

@@ -4,23 +4,31 @@ using System.Runtime.InteropServices;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 
-namespace univ.Engine.Geometry
+namespace univ
 {
-	public class VertexBuffer
+	public class GLBuffer
 	{
 		public int ID { get { return this.id; } }
 		public BufferTarget Target { get { return this.target; } }
 		
 		protected int id;
 		protected BufferTarget target;
+        protected BufferUsageHint usage;   
 		
-		public VertexBuffer(BufferTarget target)
+        public GLBuffer()
+            : this(BufferTarget.ArrayBuffer, BufferUsageHint.StaticDraw) { }
+        
+        public GLBuffer(BufferTarget target)
+            : this(target, BufferUsageHint.StaticDraw) { }
+        
+		public GLBuffer(BufferTarget target, BufferUsageHint usage)
 		{
 			this.id = GL.GenBuffer();
 			this.target = target;
+            this.usage = usage;
 		}
 		
-		~VertexBuffer()
+		~GLBuffer()
 		{
 			GL.DeleteBuffer(this.id);
 		}
@@ -35,17 +43,16 @@ namespace univ.Engine.Geometry
 			GL.BindBuffer(this.target, 0);
 		}
 		
-		public void BufferData<T>(ref T[] data) where T : struct
+		public unsafe virtual void BufferData<T>(ref T[] data) where T : struct
 		{
 			Bind();
-            unsafe {      
 			GL.BufferData<T>(
 				this.target, 
                 (IntPtr)(data.Length * sizeof(T)),
 				data, 
-				BufferUsageHint.StaticDraw
+                this.usage         
 			);
-            }
 		}
+
 	}
 }

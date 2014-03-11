@@ -11,9 +11,9 @@ namespace univ
         Shader shader;
         VertexArray geometry;
         
-        VertexBuffer vertex;
-        VertexBuffer colors;
-        VertexBuffer normal;
+        GLBuffer vertex;
+        GLBuffer colors;
+        GLBuffer normal;
         
         public Voxel(Shader shader)
             : base()

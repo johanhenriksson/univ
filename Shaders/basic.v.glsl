@@ -3,17 +3,21 @@
 in vec3 vPosition;
 in vec3 vColor;
 in vec3 vNormal;
+
 out vec4 color;
 out vec3 normal;
 
 uniform mat4 mvp;
 uniform mat3 G;
 
+varying vec3 fragmentPosition;
+
 vec3 gamma(vec3 color){
     return pow(color, vec3(1.0/1.8));
 }
 
 void main() {
+    fragmentPosition = vPosition;
     gl_Position = mvp * vec4(vPosition, 1.0);
     
     // Gamma-corrected color

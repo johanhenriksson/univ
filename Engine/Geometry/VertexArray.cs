@@ -13,7 +13,7 @@ namespace univ.Engine.Geometry
 		protected int id;
 		protected int elements;
 		protected PrimitiveType primitive;
-		protected Dictionary<string, VertexBuffer> arrays;
+		protected Dictionary<string, GLBuffer> arrays;
 		protected Dictionary<int, VertexAttribute> attributes;
 		
 		public VertexArray() : this(PrimitiveType.Triangles) { }
@@ -22,7 +22,7 @@ namespace univ.Engine.Geometry
 		{
 			this.id = GL.GenVertexArray();
 			this.primitive = primitive;
-			this.arrays = new Dictionary<string, VertexBuffer>();
+			this.arrays = new Dictionary<string, GLBuffer>();
 			this.attributes = new Dictionary<int, VertexAttribute>();
 		}
 		
@@ -41,21 +41,21 @@ namespace univ.Engine.Geometry
 			GL.BindVertexArray(0);
 		}
 		
-        public VertexBuffer CreateBuffer(string bufferName) {
+        public GLBuffer CreateBuffer(string bufferName) {
            return this.CreateBuffer(bufferName, BufferTarget.ArrayBuffer);
         }
         
-		public VertexBuffer CreateBuffer(string bufferName, BufferTarget target)
+		public GLBuffer CreateBuffer(string bufferName, BufferTarget target)
 		{
 			this.Bind();
-			VertexBuffer buffer = new VertexBuffer(target);
+			GLBuffer buffer = new GLBuffer(target);
 			this.arrays.Add(bufferName, buffer);
 			return buffer;
 		}
 		
 		public void AddPointer(string bufferName, VertexAttribute pointer)
 		{
-			VertexBuffer buffer = this.arrays[bufferName];
+			GLBuffer buffer = this.arrays[bufferName];
 			this.attributes.Add(pointer.Location, pointer);
 			buffer.Bind();
 			pointer.Point();

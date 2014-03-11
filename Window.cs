@@ -18,6 +18,8 @@ namespace univ
         Octree octree;
         Axis axis;
         
+        BaseLight ambient;
+        DirectionalLight sunlight;
         Model model;
         
         bool wireframe = false;
@@ -66,14 +68,18 @@ namespace univ
         {
             base.OnLoad(e);
             Title = "univ engine";
-            GL.ClearColor(Color.LightGray);
+            
+            
+            int maxUniformIndex;
+            GL.GetInteger(GetPName.MaxUniformBufferBindings, out maxUniformIndex);
+            Console.WriteLine("Max uniform buffers: {0}", maxUniformIndex);
             
             shader = ShaderLibrary.Get("basic");
             line_shader = ShaderLibrary.Get("line");
             
             ObjLoader loader = new ObjLoader("teapot.obj");
             model = loader.Assemble();
-            model.Rescale(0.05f);
+            model.Rescale(0.02f);
          
             octree = new Octree(shader);
             octree.Rescale(10);
@@ -82,10 +88,26 @@ namespace univ
             
             this.camera = new Camera(Width, Height);
             GL.Viewport(0, 0, Width, Height);
+            
+            /* lighting */
+            sunlight = new DirectionalLight(new BaseLight(new Vector3(1.0f, 0.5f, 0.2f), 1.0f),
+                                            new Vector3(0, -1, -2));
+            ambient = new BaseLight(new Vector3(1.0f), 0.5f);
+            
+            shader.Use();
+            /* fuck this shit for now */
+            //shader.SetBlock<DirectionalLight>("sunlight", ref sunlight);
+            //shader.SetBlock<BaseLight>("ambient", ref ambient);
+            
+            shader.SetBaseLight("ambient", ambient);
+            shader.SetDirectionalLight("sunlight", sunlight);
+            
+            GL.Enable(EnableCap.DepthClamp);
             GL.Enable(EnableCap.DepthTest);
             GL.DepthFunc(DepthFunction.Less);
             GL.Enable(EnableCap.CullFace);
             GL.CullFace(CullFaceMode.Front);
+            GL.ClearColor(Color.LightGray);
         }
      
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -107,8 +129,8 @@ namespace univ
          
             shader.Use();
             
-            Vector3 lightvec = new Vector3(0, 1, 2);
-            shader.SetVector3("light", ref lightvec);
+            Vector3 eye = camera.Position;
+            //shader.SetVector3("eye", ref eye);
          
             DrawEventArgs args = new DrawEventArgs(null, this.camera, Matrix4.Identity);
             

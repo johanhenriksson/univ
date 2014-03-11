@@ -16,12 +16,14 @@ namespace univ
         FragmentShader fragmentShader;
         protected Dictionary<string, int> uniforms;
         protected Dictionary<string, int> attributes;
+        protected Dictionary<string, UniformBuffer> blocks;
      
         protected Shader()
         {
             this.id = GL.CreateProgram();
             this.uniforms = new Dictionary<string, int>();
             this.attributes = new Dictionary<string, int>();
+            this.blocks = new Dictionary<string, UniformBuffer>();
         }
      
         public Shader(string vertexSource, string fragmentSource)
@@ -88,6 +90,12 @@ namespace univ
             }
             return loc;  
         }
+        
+        public void SetFloat(string name, float floatval)
+        {
+            int loc = GetUniformLocation(name);
+            GL.Uniform1(loc, floatval);
+        }
      
         public void SetMatrix(string name, ref Matrix4 matrix)
         {
@@ -105,6 +113,43 @@ namespace univ
         {
             int loc = GetUniformLocation(name);
             GL.Uniform3(loc, ref vector);
+        }
+        
+        public void SetVector3(string name, Vector3 vector)
+        {
+            int loc = GetUniformLocation(name);
+            GL.Uniform3(loc, vector);
+        }
+        
+        public void SetBlock<T>(string name, ref T data) where T : struct
+        {
+            T[] array = new T[] { data }; 
+            SetBlock<T>(name, ref array);
+        }
+        
+        public void SetBlock<T>(string name, ref T[] data) where T : struct
+        {
+            UniformBuffer block;
+            if (!blocks.TryGetValue(name, out block)) {
+                block = new UniformBuffer(this);
+                blocks.Add(name, block);
+            }
+            block.BufferData<T>(ref data); 
+        }
+        
+        
+        /* Piss fucking ugly hacks messing up my beautiful class */
+       
+        public void SetBaseLight(string name, BaseLight light)
+        {
+            SetVector3(name + ".color", light.Color);
+            SetFloat(name + ".intensity", light.Intensity);
+        }
+        
+        public void SetDirectionalLight(string name, DirectionalLight light)
+        {
+            SetBaseLight(name + ".base", light.Light);
+            SetVector3(name + ".direction", light.Direction);
         }
     }
 }
