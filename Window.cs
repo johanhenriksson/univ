@@ -20,6 +20,7 @@ namespace univ
         
         BaseLight ambient;
         DirectionalLight sunlight;
+        PointLight point;
         Model model;
         
         bool wireframe = false;
@@ -93,6 +94,9 @@ namespace univ
             sunlight = new DirectionalLight(new BaseLight(new Vector3(1.0f, 0.5f, 0.2f), 1.0f),
                                             new Vector3(0, -1, -2));
             ambient = new BaseLight(new Vector3(1.0f), 0.5f);
+            point = new PointLight(new BaseLight(new Vector3(0.0f, 1.0f, 0.0f), 0.85f),
+                                   new Attenuation(0.0f, 0.00f, 0.0002f),
+                                   new Vector3(0, 12, 0));
             
             shader.Use();
             /* fuck this shit for now */
@@ -101,12 +105,13 @@ namespace univ
             
             shader.SetBaseLight("ambient", ambient);
             shader.SetDirectionalLight("sunlight", sunlight);
+            shader.SetPointLight("pointLights[0]", point);
             
             GL.Enable(EnableCap.DepthClamp);
             GL.Enable(EnableCap.DepthTest);
             GL.DepthFunc(DepthFunction.Less);
-            GL.Enable(EnableCap.CullFace);
-            GL.CullFace(CullFaceMode.Front);
+            //GL.Enable(EnableCap.CullFace);
+            //GL.CullFace(CullFaceMode.Front);
             GL.ClearColor(Color.LightGray);
         }
      

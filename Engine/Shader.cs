@@ -151,5 +151,14 @@ namespace univ
             SetBaseLight(name + ".base", light.Light);
             SetVector3(name + ".direction", light.Direction);
         }
+        
+        public void SetPointLight(string name, PointLight light)
+        {
+            SetBaseLight(name + ".base", light.Light);
+            SetFloat(name + ".attenuation.constant", light.Attenuation.Constant);
+            SetFloat(name + ".attenuation.linear", light.Attenuation.Linear);
+            SetFloat(name + ".attenuation.square", light.Attenuation.Square);
+            SetVector3(name + ".position", light.Position);
+        }
     }
 }

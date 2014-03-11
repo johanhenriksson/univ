@@ -49,8 +49,8 @@ float remap(float value, float high1, float low1, float high2, float low2) {
 /* Calculates base lighting based on color, intensity and direction */
 vec4 calcLight(BaseLight light, vec3 direction)
 {
-    float intensity = max(dot(-direction, normal), 0.0);
-    return vec4(intensity * light.intensity * light.color, 1.0);
+    float intensity = light.intensity * max(dot(-direction, normal), 0.0);
+    return vec4(intensity * light.color, 1.0);
 }
 
 /* Helper method for calculating directional lights */
@@ -83,6 +83,12 @@ void main()
     
     /* Diffuse Lighting */
     light += calcDirectionalLight(sunlight);
+    
+    /* Point Lights */
+    for(int i = 0; i < MAX_POINT_LIGHTS; i++)
+    {
+        light += calcPointLight(pointLights[i]);
+    }
     
     /* Specular lighting */
     vec3 toCamera = normalize(eye - fragmentPosition);
