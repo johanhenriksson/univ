@@ -7,6 +7,7 @@ in vec3 vNormal;
 out vec4 color;
 out vec3 normal;
 
+uniform mat3 model;
 uniform mat4 mvp;
 uniform mat3 G;
 
@@ -17,7 +18,7 @@ vec3 gamma(vec3 color){
 }
 
 void main() {
-    fragmentPosition = vPosition;
+    fragmentPosition = model * vPosition;
     gl_Position = mvp * vec4(vPosition, 1.0);
     
     // Gamma-corrected color

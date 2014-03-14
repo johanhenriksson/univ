@@ -36,7 +36,7 @@ namespace univ
                         GL.Disable(EnableCap.CullFace);
                         GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
                     } else {
-                        GL.Enable(EnableCap.CullFace);
+                        //GL.Enable(EnableCap.CullFace);
                         GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
                     }
                     break;
@@ -70,11 +70,6 @@ namespace univ
             base.OnLoad(e);
             Title = "univ engine";
             
-            
-            int maxUniformIndex;
-            GL.GetInteger(GetPName.MaxUniformBufferBindings, out maxUniformIndex);
-            Console.WriteLine("Max uniform buffers: {0}", maxUniformIndex);
-            
             shader = ShaderLibrary.Get("basic");
             line_shader = ShaderLibrary.Get("line");
             
@@ -94,9 +89,9 @@ namespace univ
             sunlight = new DirectionalLight(new BaseLight(new Vector3(1.0f, 0.5f, 0.2f), 1.0f),
                                             new Vector3(0, -1, -2));
             ambient = new BaseLight(new Vector3(1.0f), 0.5f);
-            point = new PointLight(new BaseLight(new Vector3(0.0f, 1.0f, 0.0f), 0.85f),
-                                   new Attenuation(0.0f, 0.00f, 0.0002f),
-                                   new Vector3(0, 12, 0));
+            point = new PointLight(new BaseLight(new Vector3(0.0f, 1.0f, 0.0f), 0.35f),
+                                   new Attenuation(0.0f, 0.00f, 0.002f),
+                                   new Vector3(7, 10, 0));
             
             shader.Use();
             /* fuck this shit for now */
@@ -110,8 +105,8 @@ namespace univ
             GL.Enable(EnableCap.DepthClamp);
             GL.Enable(EnableCap.DepthTest);
             GL.DepthFunc(DepthFunction.Less);
-            //GL.Enable(EnableCap.CullFace);
-            //GL.CullFace(CullFaceMode.Front);
+            GL.Enable(EnableCap.CullFace);
+            GL.CullFace(CullFaceMode.Back);
             GL.ClearColor(Color.LightGray);
         }
      
@@ -135,7 +130,7 @@ namespace univ
             shader.Use();
             
             Vector3 eye = camera.Position;
-            //shader.SetVector3("eye", ref eye);
+            shader.SetVector3("eye", ref eye);
          
             DrawEventArgs args = new DrawEventArgs(null, this.camera, Matrix4.Identity);
             

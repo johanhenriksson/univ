@@ -92,9 +92,9 @@ namespace univ
             
             int j = 0;
             foreach(UInt3 f in faces) {
-                indices[j++] = (ushort)(f.X - 1);
-                indices[j++] = (ushort)(f.Y - 1);
                 indices[j++] = (ushort)(f.Z - 1);
+                indices[j++] = (ushort)(f.Y - 1);
+                indices[j++] = (ushort)(f.X - 1);
             }
             
             VertexArray mesh = new VertexArray();

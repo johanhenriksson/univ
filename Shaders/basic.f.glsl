@@ -50,7 +50,21 @@ float remap(float value, float high1, float low1, float high2, float low2) {
 vec4 calcLight(BaseLight light, vec3 direction)
 {
     float intensity = light.intensity * max(dot(-direction, normal), 0.0);
-    return vec4(intensity * light.color, 1.0);
+    
+    /* Specular lighting */
+    vec3 toCamera = normalize(eye - fragmentPosition);
+    vec3 halfVec = normalize(toCamera - direction);
+    float specular = dot(normal, halfVec);
+    
+    if (specular < 0.0)
+        specular = 0.0;
+        
+    /* Material constants */
+    float a = 15.0;
+    float c = 0.8;
+    specular = c * pow(specular, a);
+    
+    return vec4((specular + intensity) * light.color, 1.0);
 }
 
 /* Helper method for calculating directional lights */
@@ -89,18 +103,6 @@ void main()
     {
         light += calcPointLight(pointLights[i]);
     }
-    
-    /* Specular lighting */
-    vec3 toCamera = normalize(eye - fragmentPosition);
-    vec3 halfVec = normalize(toCamera - sunlight.direction);
-    float specular = dot(normal, halfVec);
-    
-    if (specular < 0.0)
-        specular = 0.0;
-        
-    float a = 15.0;
-    float c = 0.8;
-    specular = c * pow(specular, a);
     
     out_color = light * color;
 }

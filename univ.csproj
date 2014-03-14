@@ -66,6 +66,7 @@
     <Compile Include="Engine\Light\PointLight.cs" />
     <Compile Include="Engine\GLBuffer.cs" />
     <Compile Include="Engine\UniformBuffer.cs" />
+    <Compile Include="Engine\Noise.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Shaders\" />
@@ -73,6 +74,7 @@
     <Folder Include="Engine\Geometry\" />
     <Folder Include="Engine\ObjLoader\" />
     <Folder Include="Engine\Light\" />
+    <Folder Include="Library\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\line.f.glsl">
